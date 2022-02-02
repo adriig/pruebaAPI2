@@ -3,6 +3,7 @@ import morgan from 'morgan'
 import cors from 'cors'
 
 import { routes } from './routes/routes'
+import { db } from './database/database'
 
 class Server {
     private app: express.Application

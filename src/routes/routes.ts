@@ -12,6 +12,24 @@ class DatoRoutes {
         return this._router
     }
 
+    private addClientes = async (req: Request, res: Response) => {
+        
+    }
+
+    private searchClientes = async (req: Request, res: Response) => {
+        await db.conectarBD()
+        .then( async (mensaje) => {
+            const valor = req.params.id
+            console.log(mensaje)
+            const query  = await ClienteDB.findOne({_id: valor})
+            res.json(query)
+        })
+        // Testeo
+        .catch((mensaje) => {
+            res.send(mensaje)
+        })
+    }
+
     private getClientes = async (req: Request, res: Response) => {
         await db.conectarBD()
         .then( async (mensaje) => {
@@ -23,12 +41,12 @@ class DatoRoutes {
         .catch((mensaje) => {
             res.send(mensaje)
         })
-
-        db.desconectarBD()
     }
 
     misRutas(){
-        this._router.get('/clientes', this.getClientes)
+        this._router.get('/Clientes/get', this.getClientes)
+        this._router.get('/Clientes/add/:id/:nombre/:posicion', this.addClientes)
+        this._router.get('/Clientes/search/:id', this.searchClientes)
     }
 }
 
