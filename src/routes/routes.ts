@@ -19,6 +19,7 @@ class DatoRoutes {
             const query  = await ClienteDB.find({})
             res.json(query)
         })
+        // Testeo
         .catch((mensaje) => {
             res.send(mensaje)
         })
