@@ -1,6 +1,12 @@
 import {Request, Response, Router } from 'express'
-import { ClienteDB } from '../model/clientes'
+import { ClienteDB, iCliente } from '../model/clientes'
 import { db } from '../database/database'
+
+let dSchemaCliente: iCliente = {
+    _id: null,
+    _nombreCliente: null,
+    _posicion: null
+}
 
 class DatoRoutes {
     private _router: Router
@@ -13,7 +19,19 @@ class DatoRoutes {
     }
 
     private addClientes = async (req: Request, res: Response) => {
-        
+        await db.conectarBD()
+        .then( async (mensaje) => {
+          const {id, nombre, posicion} = req.body
+          dSchemaCliente = {
+              _id: id,
+              _nombreCliente: nombre,
+              _posicion: posicion
+          }
+          const oSchema = new ClienteDB(dSchemaCliente)
+          await oSchema.save()
+        }).catch((mensaje) => {
+            res.send(mensaje)
+        })
     }
 
     private searchClientes = async (req: Request, res: Response) => {
@@ -45,7 +63,7 @@ class DatoRoutes {
 
     misRutas(){
         this._router.get('/Clientes/get', this.getClientes)
-        this._router.get('/Clientes/add/:id/:nombre/:posicion', this.addClientes)
+        this._router.post('/Clientes/add', this.addClientes)
         this._router.get('/Clientes/search/:id', this.searchClientes)
     }
 }
