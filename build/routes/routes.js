@@ -45,6 +45,11 @@ let dSchemaMozo = {
 };
 class DatoRoutes {
     constructor() {
+        /**
+         *
+         * Rutas para Aplicación CRUD de Clientes.
+         *
+         */
         this.addClientes = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { id, nombre, posicion } = req.body;
             yield database_1.db.conectarBD()
@@ -96,16 +101,60 @@ class DatoRoutes {
                 res.send(mensaje);
             });
         });
+        /**
+         *
+         * Rutas para Aplicación CRUD de Empleados.
+         *
+         */
         this.addEmp = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const { id, nombre, posicion } = req.body;
+            const { id, tipo, nombre, antiguedad, jornada } = req.body;
             yield database_1.db.conectarBD()
                 .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
-                dSchemaCliente = {
+                dSchemaEmp = {
                     _id: id,
-                    _nombreCliente: nombre,
-                    _posicion: posicion
+                    _Tipo: tipo,
+                    _Nombre: nombre,
+                    _Antiguedad: antiguedad,
+                    _JornadaCompl: jornada
                 };
-                const oSchema = new empleados_1.EmpleadoDB(dSchemaCliente);
+                const oSchema = new empleados_1.EmpleadoDB(dSchemaEmp);
+                yield oSchema.save();
+            })).catch((mensaje) => {
+                res.send(mensaje);
+            });
+        });
+        this.addRep = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const { id, tipo, nombre, antiguedad, jornada, experiencia, repartos } = req.body;
+            yield database_1.db.conectarBD()
+                .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
+                dSchemaRep = {
+                    _id: id,
+                    _Tipo: tipo,
+                    _Nombre: nombre,
+                    _Antiguedad: antiguedad,
+                    _JornadaCompl: jornada,
+                    _Experiencia: experiencia,
+                    _Repartos: repartos
+                };
+                const oSchema = new empleados_1.EmpleadoDB(dSchemaRep);
+                yield oSchema.save();
+            })).catch((mensaje) => {
+                res.send(mensaje);
+            });
+        });
+        this.addMozo = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const { id, tipo, nombre, antiguedad, jornada, almacen } = req.body;
+            yield database_1.db.conectarBD()
+                .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
+                dSchemaMozo = {
+                    _id: id,
+                    _Tipo: tipo,
+                    _Nombre: nombre,
+                    _Antiguedad: antiguedad,
+                    _JornadaCompl: jornada,
+                    _IdAlmacen: almacen
+                };
+                const oSchema = new empleados_1.EmpleadoDB(dSchemaMozo);
                 yield oSchema.save();
             })).catch((mensaje) => {
                 res.send(mensaje);
@@ -116,7 +165,7 @@ class DatoRoutes {
                 .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
                 const valor = req.params.id;
                 console.log(mensaje);
-                const query = yield clientes_1.ClienteDB.findOne({ _id: valor });
+                const query = yield empleados_1.EmpleadoDB.findOne({ _id: valor });
                 res.json(query);
             }))
                 // Testeo
@@ -128,7 +177,7 @@ class DatoRoutes {
             yield database_1.db.conectarBD()
                 .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
                 console.log(mensaje);
-                const query = yield clientes_1.ClienteDB.find({});
+                const query = yield empleados_1.EmpleadoDB.find({});
                 res.json(query);
             }))
                 .catch((mensaje) => {
@@ -140,7 +189,7 @@ class DatoRoutes {
             yield database_1.db.conectarBD()
                 .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
                 console.log(mensaje);
-                const query = yield clientes_1.ClienteDB.findOneAndDelete({ _id: valor });
+                const query = yield empleados_1.EmpleadoDB.findOneAndDelete({ _id: valor });
                 res.json(query);
             }))
                 .catch((mensaje) => {
@@ -157,6 +206,12 @@ class DatoRoutes {
         this._router.post('/Clientes/add', this.addClientes);
         this._router.get('/Clientes/search/:id', this.searchClientes);
         this._router.get('/Clientes/delete/:id', this.deleteClientes);
+        this._router.post('/Empleados/addEmp', this.addEmp);
+        this._router.post('/Empleados/addRep', this.addRep);
+        this._router.post('/Empleados/addMozo', this.addMozo);
+        this._router.get('/Empleados/get', this.getEmp);
+        this._router.get('/Empleados/search/:id', this.searchEmp);
+        this._router.get('/Empleados/delete/:id', this.deleteEmp);
     }
 }
 const obj = new DatoRoutes();

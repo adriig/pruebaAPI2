@@ -46,6 +46,12 @@ class DatoRoutes {
         return this._router
     }
 
+    /**
+     * 
+     * Rutas para Aplicación CRUD de Clientes.
+     * 
+     */
+
     private addClientes = async (req: Request, res: Response) => {
         const {id, nombre, posicion} = req.body
         await db.conectarBD()
@@ -101,16 +107,63 @@ class DatoRoutes {
         })
     }
 
+    /**
+     * 
+     * Rutas para Aplicación CRUD de Empleados.
+     * 
+     */
+
     private addEmp = async (req: Request, res: Response) => {
-        const {id, nombre, posicion} = req.body
+        const {id, tipo, nombre, antiguedad, jornada} = req.body
         await db.conectarBD()
         .then( async (mensaje) => {
-          dSchemaCliente = {
+          dSchemaEmp = {
               _id: id,
-              _nombreCliente: nombre,
-              _posicion: posicion
+              _Tipo: tipo,
+              _Nombre: nombre,
+              _Antiguedad: antiguedad,
+              _JornadaCompl: jornada
           }
-          const oSchema = new EmpleadoDB(dSchemaCliente)
+          const oSchema = new EmpleadoDB(dSchemaEmp)
+          await oSchema.save()
+        }).catch((mensaje) => {
+            res.send(mensaje)
+        })
+    }
+
+    private addRep = async (req: Request, res: Response) => {
+        const {id, tipo, nombre, antiguedad, jornada, experiencia, repartos} = req.body
+        await db.conectarBD()
+        .then( async (mensaje) => {
+            dSchemaRep = {
+                _id: id,
+                _Tipo: tipo,
+                _Nombre: nombre,
+                _Antiguedad: antiguedad,
+                _JornadaCompl: jornada,
+                _Experiencia: experiencia,
+                _Repartos: repartos
+          }
+          const oSchema = new EmpleadoDB(dSchemaRep)
+          await oSchema.save()
+        }).catch((mensaje) => {
+            res.send(mensaje)
+        })
+    }
+
+    private addMozo = async (req: Request, res: Response) => {
+        const {id, tipo, nombre, antiguedad, jornada, almacen} = req.body
+        await db.conectarBD()
+        .then( async (mensaje) => {
+            dSchemaMozo = {
+                _id: id,
+                _Tipo: tipo,
+                _Nombre: nombre,
+                _Antiguedad: antiguedad,
+                _JornadaCompl: jornada,
+                _IdAlmacen: almacen
+          }
+          const oSchema = new EmpleadoDB(dSchemaMozo)
           await oSchema.save()
         }).catch((mensaje) => {
             res.send(mensaje)
@@ -122,7 +175,7 @@ class DatoRoutes {
         .then( async (mensaje) => {
             const valor = req.params.id
             console.log(mensaje)
-            const query  = await ClienteDB.findOne({_id: valor})
+            const query  = await EmpleadoDB.findOne({_id: valor})
             res.json(query)
         })
         // Testeo
@@ -135,7 +188,7 @@ class DatoRoutes {
         await db.conectarBD()
         .then( async (mensaje) => {
             console.log(mensaje)
-            const query  = await ClienteDB.find({})
+            const query  = await EmpleadoDB.find({})
             res.json(query)
         })
         .catch((mensaje) => {
@@ -148,7 +201,7 @@ class DatoRoutes {
         await db.conectarBD()
         .then( async (mensaje) => {
             console.log(mensaje)
-            const query  = await ClienteDB.findOneAndDelete({_id: valor})
+            const query  = await EmpleadoDB.findOneAndDelete({_id: valor})
             res.json(query)
         })
         .catch((mensaje) => {
@@ -162,6 +215,13 @@ class DatoRoutes {
         this._router.post('/Clientes/add', this.addClientes)
         this._router.get('/Clientes/search/:id', this.searchClientes)
         this._router.get('/Clientes/delete/:id', this.deleteClientes)
+
+        this._router.post('/Empleados/addEmp', this.addEmp)
+        this._router.post('/Empleados/addRep', this.addRep)
+        this._router.post('/Empleados/addMozo', this.addMozo)
+        this._router.get('/Empleados/get', this.getEmp)
+        this._router.get('/Empleados/search/:id', this.searchEmp)
+        this._router.get('/Empleados/delete/:id', this.deleteEmp)
     }
 }
 
