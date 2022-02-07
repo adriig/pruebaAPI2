@@ -14,6 +14,8 @@ const express_1 = require("express");
 const clientes_1 = require("../model/clientes");
 const empleados_1 = require("../model/empleados");
 const database_1 = require("../database/database");
+const productos_1 = require("../model/productos");
+const almacenes_1 = require("../model/almacenes");
 let dSchemaCliente = {
     _id: null,
     _nombreCliente: null,
@@ -42,6 +44,17 @@ let dSchemaMozo = {
     _Antiguedad: null,
     _JornadaCompl: null,
     _IdAlmacen: null
+};
+let dSchemaProducto = {
+    _id: null,
+    _NombreProducto: null,
+    _Almacenamiento: null
+};
+let dSchemaAlmacen = {
+    _id: null,
+    _Posicion: null,
+    _CapacidadMax: null,
+    _Mozos: null,
 };
 class DatoRoutes {
     constructor() {
@@ -196,6 +209,119 @@ class DatoRoutes {
                 res.send(mensaje);
             });
         });
+        /**
+         *
+         * Rutas para Aplicación CRUD de Productos.
+         *
+        */
+        this.getProd = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            yield database_1.db.conectarBD()
+                .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
+                console.log(mensaje);
+                const query = yield productos_1.ProductoDB.find({});
+                res.json(query);
+            }))
+                .catch((mensaje) => {
+                res.send(mensaje);
+            });
+        });
+        this.searchProd = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const valor = req.params.id;
+            yield database_1.db.conectarBD()
+                .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
+                console.log(mensaje);
+                const query = yield productos_1.ProductoDB.findOne({ _id: valor });
+                res.json(query);
+            }))
+                .catch((mensaje) => {
+                res.send(mensaje);
+            });
+        });
+        this.deleteProd = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const valor = req.params.id;
+            yield database_1.db.conectarBD()
+                .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
+                console.log(mensaje);
+                const query = yield productos_1.ProductoDB.findOneAndDelete({ _id: valor });
+                res.json(query);
+            }))
+                .catch((mensaje) => {
+                res.send(mensaje);
+            });
+        });
+        this.addProd = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const { id, nombre, almacenamiento } = req.body;
+            yield database_1.db.conectarBD()
+                .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
+                dSchemaProducto = {
+                    _id: id,
+                    _NombreProducto: nombre,
+                    _Almacenamiento: almacenamiento,
+                };
+                const oSchema = new productos_1.ProductoDB(dSchemaProducto);
+                yield oSchema.save();
+            })).catch((mensaje) => {
+                res.send(mensaje);
+            });
+        });
+        /**
+         *
+         * Rutas para Aplicación CRUD de Productos.
+         *
+        */
+        this.getAlmacen = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            yield database_1.db.conectarBD()
+                .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
+                console.log(mensaje);
+                const query = yield almacenes_1.AlmacenesDB.find({});
+                res.json(query);
+            }))
+                .catch((mensaje) => {
+                res.send(mensaje);
+            });
+        });
+        this.searchAlmacen = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const valor = req.params.id;
+            yield database_1.db.conectarBD()
+                .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
+                console.log(mensaje);
+                const query = yield almacenes_1.AlmacenesDB.findOne({ _id: valor });
+                res.json(query);
+            }))
+                .catch((mensaje) => {
+                res.send(mensaje);
+            });
+        });
+        this.addAlmacen = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const { id, posicion, capacidadMax, mozos } = req.body;
+            const valor = req.params.id;
+            yield database_1.db.conectarBD()
+                .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
+                dSchemaAlmacen = {
+                    _id: id,
+                    _Posicion: posicion,
+                    _CapacidadMax: capacidadMax,
+                    _Mozos: mozos,
+                };
+                const oSchema = new productos_1.ProductoDB(dSchemaProducto);
+                yield oSchema.save();
+            }))
+                .catch((mensaje) => {
+                res.send(mensaje);
+            });
+        });
+        this.deleteAlmacen = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const valor = req.params.id;
+            yield database_1.db.conectarBD()
+                .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
+                console.log(mensaje);
+                const query = yield almacenes_1.AlmacenesDB.findOneAndDelete({ _id: valor });
+                res.json(query);
+            }))
+                .catch((mensaje) => {
+                res.send(mensaje);
+            });
+        });
         this._router = (0, express_1.Router)();
     }
     get router() {
@@ -212,6 +338,14 @@ class DatoRoutes {
         this._router.get('/Empleados/get', this.getEmp);
         this._router.get('/Empleados/search/:id', this.searchEmp);
         this._router.get('/Empleados/delete/:id', this.deleteEmp);
+        this._router.get('/Productos/get', this.getProd);
+        this._router.post('/Productos/add', this.addProd);
+        this._router.get('/Productos/search/:id', this.searchProd);
+        this._router.get('/Productos/delete/:id', this.deleteProd);
+        this._router.get('/Almacenes/get', this.getAlmacen);
+        this._router.post('/Almacenes/add', this.addAlmacen);
+        this._router.get('/Almacenes/search/:id', this.searchAlmacen);
+        this._router.get('/Almacenes/delete/:id', this.deleteAlmacen);
     }
 }
 const obj = new DatoRoutes();

@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AlmacenesDB = void 0;
 const mongoose_1 = require("mongoose");
-//import { MozoAlmacenObj } from "../classes/trabajadores/mozoAlmacen";
 // Definimos el Schema
 const almacenesSchema = new mongoose_1.Schema({
     _id: {

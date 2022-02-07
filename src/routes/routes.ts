@@ -2,6 +2,8 @@ import {Request, Response, Router } from 'express'
 import { ClienteDB, iCliente } from '../model/clientes'
 import { EmpleadoDB, iEmpleado, iMozo, iRepartidor } from '../model/empleados'
 import { db } from '../database/database'
+import { ProductoDB, iProducto } from '../model/productos'
+import { AlmacenesDB, iAlmacen } from '../model/almacenes'
 
 let dSchemaCliente: iCliente = {
     _id: null,
@@ -34,6 +36,19 @@ let dSchemaMozo: iMozo = {
     _Antiguedad: null,
     _JornadaCompl: null,
     _IdAlmacen: null
+}
+
+let dSchemaProducto : iProducto = {
+    _id: null,
+    _NombreProducto: null,
+    _Almacenamiento: null
+}
+
+let dSchemaAlmacen: iAlmacen = {
+    _id: null,
+    _Posicion: null,
+    _CapacidadMax: null,
+    _Mozos: null,
 }
 
 class DatoRoutes {
@@ -210,6 +225,131 @@ class DatoRoutes {
     }
 
 
+    /**
+     * 
+     * Rutas para Aplicación CRUD de Productos.
+     * 
+    */
+
+    private getProd = async (req: Request, res: Response) => {
+        await db.conectarBD()
+        .then( async (mensaje) => {
+            console.log(mensaje)
+            const query  = await ProductoDB.find({})
+            res.json(query)
+        })
+        .catch((mensaje) => {
+            res.send(mensaje)
+        })
+    }
+
+    private searchProd = async (req: Request, res: Response) => {
+        const valor = req.params.id
+        await db.conectarBD()
+        .then( async (mensaje) => {
+            console.log(mensaje)
+            const query  = await ProductoDB.findOne({_id: valor})
+            res.json(query)
+        })
+        .catch((mensaje) => {
+            res.send(mensaje)
+        })
+    }
+
+    private deleteProd = async (req: Request, res: Response) => {
+        const valor = req.params.id
+        await db.conectarBD()
+        .then( async (mensaje) => {
+            console.log(mensaje)
+            const query  = await ProductoDB.findOneAndDelete({_id: valor})
+            res.json(query)
+        })
+        .catch((mensaje) => {
+            res.send(mensaje)
+        })
+    }
+
+    private addProd = async (req: Request, res: Response) => {
+        const {id, nombre, almacenamiento} = req.body
+        await db.conectarBD()
+        .then( async (mensaje) => {
+            dSchemaProducto = {
+                _id: id,
+                _NombreProducto: nombre,
+                _Almacenamiento: almacenamiento,
+          }
+          const oSchema = new ProductoDB(dSchemaProducto)
+          await oSchema.save()
+        }).catch((mensaje) => {
+            res.send(mensaje)
+        })
+    }
+
+
+    /**
+     * 
+     * Rutas para Aplicación CRUD de Productos.
+     * 
+    */
+
+     private getAlmacen = async (req: Request, res: Response) => {
+        await db.conectarBD()
+        .then( async (mensaje) => {
+            console.log(mensaje)
+            const query  = await AlmacenesDB.find({})
+            res.json(query)
+        })
+        .catch((mensaje) => {
+            res.send(mensaje)
+        })
+    }
+
+    private searchAlmacen = async (req: Request, res: Response) => {
+        const valor = req.params.id
+        await db.conectarBD()
+        .then( async (mensaje) => {
+            console.log(mensaje)
+            const query  = await AlmacenesDB.findOne({_id: valor})
+            res.json(query)
+        })
+        .catch((mensaje) => {
+            res.send(mensaje)
+        })
+    }
+
+    private addAlmacen = async (req: Request, res: Response) => {
+        const {id, posicion, capacidadMax, mozos} = req.body
+        const valor = req.params.id
+        await db.conectarBD()
+        .then( async (mensaje) => {
+            dSchemaAlmacen = {
+                _id: id,
+                _Posicion: posicion,
+                _CapacidadMax: capacidadMax,
+                _Mozos: mozos,
+          }
+          const oSchema = new ProductoDB(dSchemaProducto)
+          await oSchema.save()
+        })
+        .catch((mensaje) => {
+            res.send(mensaje)
+        })
+    }
+
+    private deleteAlmacen = async (req: Request, res: Response) => {
+        const valor = req.params.id
+        await db.conectarBD()
+        .then( async (mensaje) => {
+            console.log(mensaje)
+            const query  = await AlmacenesDB.findOneAndDelete({_id: valor})
+            res.json(query)
+        })
+        .catch((mensaje) => {
+            res.send(mensaje)
+        })
+    }
+
+
     misRutas(){
         this._router.get('/Clientes/get', this.getClientes)
         this._router.post('/Clientes/add', this.addClientes)
@@ -222,9 +362,18 @@ class DatoRoutes {
         this._router.get('/Empleados/get', this.getEmp)
         this._router.get('/Empleados/search/:id', this.searchEmp)
         this._router.get('/Empleados/delete/:id', this.deleteEmp)
+    
+        this._router.get('/Productos/get', this.getProd)
+        this._router.post('/Productos/add', this.addProd)
+        this._router.get('/Productos/search/:id', this.searchProd)
+        this._router.get('/Productos/delete/:id', this.deleteProd)
+
+        this._router.get('/Almacenes/get', this.getAlmacen)
+        this._router.post('/Almacenes/add', this.addAlmacen)
+        this._router.get('/Almacenes/search/:id', this.searchAlmacen)
+        this._router.get('/Almacenes/delete/:id', this.deleteAlmacen)
     }
 }
-
 const obj = new DatoRoutes()
 obj.misRutas()
 export const routes = obj.router
