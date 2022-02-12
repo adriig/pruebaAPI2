@@ -41,6 +41,9 @@ let dSchemaMozo: iMozo = {
 let dSchemaProducto : iProducto = {
     _id: null,
     _NombreProducto: null,
+    _CategoriaProducto: null,
+    _Precio: null,
+    _NotaMedia: null,
     _Almacenamiento: null
 }
 
@@ -270,13 +273,16 @@ class DatoRoutes {
     }
 
     private addProd = async (req: Request, res: Response) => {
-        const {id, nombre, almacenamiento} = req.body
+        const {id, nombre, categoria, precio, nota, almacenamiento} = req.body
         await db.conectarBD()
         .then( async (mensaje) => {
             dSchemaProducto = {
                 _id: id,
                 _NombreProducto: nombre,
-                _Almacenamiento: almacenamiento,
+                _CategoriaProducto: categoria,
+                _Precio: precio,
+                _NotaMedia: nota,
+                _Almacenamiento: almacenamiento
           }
           const oSchema = new ProductoDB(dSchemaProducto)
           await oSchema.save()

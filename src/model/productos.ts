@@ -9,6 +9,18 @@ const productosSchema = new Schema({
         type: String
     },
 
+    _CategoriaProducto: {
+        type: String
+    },
+
+    Precio: {
+        type: Number
+    },
+
+    NotaMedia: {
+        type: Number
+    },
+
     _Almacenamiento: {
         type: Array
     }
@@ -17,6 +29,9 @@ const productosSchema = new Schema({
 export type iProducto = {
     _id: number | null, // para acceder en la subclase
     _NombreProducto: string | null,
+    _CategoriaProducto: string | null,
+    _Precio: number | null,
+    _NotaMedia: Number | null,
     _Almacenamiento: Array<any> | null,
 }
 
