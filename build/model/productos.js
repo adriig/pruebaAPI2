@@ -10,6 +10,15 @@ const productosSchema = new mongoose_1.Schema({
     _NombreProducto: {
         type: String
     },
+    _CategoriaProducto: {
+        type: String
+    },
+    _Precio: {
+        type: Number
+    },
+    _NotaMedia: {
+        type: Number
+    },
     _Almacenamiento: {
         type: Array
     }

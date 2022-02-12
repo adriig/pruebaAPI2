@@ -48,6 +48,9 @@ let dSchemaMozo = {
 let dSchemaProducto = {
     _id: null,
     _NombreProducto: null,
+    _CategoriaProducto: null,
+    _Precio: null,
+    _NotaMedia: null,
     _Almacenamiento: null
 };
 let dSchemaAlmacen = {
@@ -250,13 +253,16 @@ class DatoRoutes {
             });
         });
         this.addProd = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const { id, nombre, almacenamiento } = req.body;
+            const { id, nombre, categoria, precio, nota, almacenamiento } = req.body;
             yield database_1.db.conectarBD()
                 .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
                 dSchemaProducto = {
                     _id: id,
                     _NombreProducto: nombre,
-                    _Almacenamiento: almacenamiento,
+                    _CategoriaProducto: categoria,
+                    _Precio: precio,
+                    _NotaMedia: nota,
+                    _Almacenamiento: almacenamiento
                 };
                 const oSchema = new productos_1.ProductoDB(dSchemaProducto);
                 yield oSchema.save();
