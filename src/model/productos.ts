@@ -13,11 +13,11 @@ const productosSchema = new Schema({
         type: String
     },
 
-    Precio: {
+    _Precio: {
         type: Number
     },
 
-    NotaMedia: {
+    _NotaMedia: {
         type: Number
     },
 
