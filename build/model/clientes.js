@@ -7,7 +7,7 @@ const clientesScema = new mongoose_1.Schema({
     _id: {
         type: Number // para acceder en la subclase
     },
-    _nombreClient: {
+    _nombreCliente: {
         type: String
     },
     _posicion: {

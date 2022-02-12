@@ -4,7 +4,7 @@ const clientesScema = new Schema({
     _id: {
         type: Number // para acceder en la subclase
     },
-    _nombreClient: {
+    _nombreCliente: {
         type: String
     },
 

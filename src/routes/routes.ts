@@ -272,6 +272,18 @@ class DatoRoutes {
         })
     }
 
+    private prueba = async (req: Request, res: Response) => {
+        await db.conectarBD()
+        .then( async (mensaje) => {
+            console.log(mensaje)
+            const query  = await ProductoDB.findOneAndDelete({_id: 36})
+            res.json(query)
+        })
+        .catch((mensaje) => {
+            res.send(mensaje)
+        })
+    }
+
     private addProd = async (req: Request, res: Response) => {
         const {id, nombre, categoria, precio, nota, almacenamiento} = req.body
         await db.conectarBD()
@@ -372,6 +384,7 @@ class DatoRoutes {
         this._router.get('/Productos/get', this.getProd)
         this._router.post('/Productos/add', this.addProd)
         this._router.get('/Productos/search/:id', this.searchProd)
+        this._router.get('/Productos/prueba', this.prueba)
         this._router.get('/Productos/delete/:id', this.deleteProd)
 
         this._router.get('/Almacenes/get', this.getAlmacen)

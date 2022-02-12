@@ -252,6 +252,17 @@ class DatoRoutes {
                 res.send(mensaje);
             });
         });
+        this.prueba = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            yield database_1.db.conectarBD()
+                .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
+                console.log(mensaje);
+                const query = yield productos_1.ProductoDB.findOneAndDelete({ _id: 36 });
+                res.json(query);
+            }))
+                .catch((mensaje) => {
+                res.send(mensaje);
+            });
+        });
         this.addProd = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { id, nombre, categoria, precio, nota, almacenamiento } = req.body;
             yield database_1.db.conectarBD()
@@ -347,6 +358,7 @@ class DatoRoutes {
         this._router.get('/Productos/get', this.getProd);
         this._router.post('/Productos/add', this.addProd);
         this._router.get('/Productos/search/:id', this.searchProd);
+        this._router.get('/Productos/prueba', this.prueba);
         this._router.get('/Productos/delete/:id', this.deleteProd);
         this._router.get('/Almacenes/get', this.getAlmacen);
         this._router.post('/Almacenes/add', this.addAlmacen);
