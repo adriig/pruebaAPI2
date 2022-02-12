@@ -31,7 +31,7 @@ export type iProducto = {
     _NombreProducto: string | null,
     _CategoriaProducto: string | null,
     _Precio: number | null,
-    _NotaMedia: Number | null,
+    _NotaMedia: number | null,
     _Almacenamiento: Array<any> | null,
 }
 
