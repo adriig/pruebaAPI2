@@ -36,4 +36,4 @@ export type iProducto = {
 }
 
 // La colección de la BD (Plural siempre)
-export const ProductoDB = model('productos', productosSchema)
+export const ProductoDB = model('productos2', productosSchema)
