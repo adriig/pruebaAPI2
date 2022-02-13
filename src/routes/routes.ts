@@ -2,7 +2,7 @@ import {Request, Response, Router } from 'express'
 import { ClienteDB, iCliente } from '../model/clientes'
 import { EmpleadoDB, iEmpleado, iMozo, iRepartidor } from '../model/empleados'
 import { db } from '../database/database'
-import { ProductoDB, iProducto } from '../model/productos'
+import { ProductoDB, iProducto, iMovil, iProcesador, iRopa } from '../model/productos'
 import { AlmacenesDB, iAlmacen } from '../model/almacenes'
 
 let dSchemaCliente: iCliente = {
@@ -42,9 +42,40 @@ let dSchemaProducto : iProducto = {
     _id: null,
     _NombreProducto: null,
     _CategoriaProducto: null,
-    _Precio: null,
+    _PrecioBase: null,
     _NotaMedia: null,
     _Almacenamiento: null
+}
+
+let dSchemaRopa : iRopa = {
+    _id: null,
+    _NombreProducto: null,
+    _CategoriaProducto: null,
+    _PrecioBase: null,
+    _NotaMedia: null,
+    _Almacenamiento: null,
+    _Talla: null,
+}
+
+let dSchemaMovil: iMovil = {
+    _id: null,
+    _NombreProducto: null,
+    _CategoriaProducto: null,
+    _PrecioBase: null,
+    _NotaMedia: null,
+    _Almacenamiento: null,
+    _GBRam: null,
+    _Megapixeles: null,
+}
+
+let dSchemaProcesador: iProcesador = {
+    _id: null,
+    _NombreProducto: null,
+    _CategoriaProducto: null,
+    _PrecioBase: null,
+    _NotaMedia: null,
+    _Almacenamiento: null,
+    _GHz: null
 }
 
 let dSchemaAlmacen: iAlmacen = {
@@ -52,6 +83,7 @@ let dSchemaAlmacen: iAlmacen = {
     _Posicion: null,
     _CapacidadMax: null,
     _Mozos: null,
+    _Repartidores: null
 }
 
 class DatoRoutes {
@@ -292,11 +324,72 @@ class DatoRoutes {
                 _id: id,
                 _NombreProducto: nombre,
                 _CategoriaProducto: categoria,
-                _Precio: precio,
+                _PrecioBase: precio,
                 _NotaMedia: nota,
                 _Almacenamiento: almacenamiento
           }
           const oSchema = new ProductoDB(dSchemaProducto)
+          await oSchema.save()
+        }).catch((mensaje) => {
+            res.send(mensaje)
+        })
+    }
+
+    private addRopa = async (req: Request, res: Response) => {
+        const {id, nombre, categoria, precio, nota, almacenamiento, talla} = req.body
+        await db.conectarBD()
+        .then( async (mensaje) => {
+            dSchemaRopa = {
+                _id: id,
+                _NombreProducto: nombre,
+                _CategoriaProducto: categoria,
+                _PrecioBase: precio,
+                _NotaMedia: nota,
+                _Almacenamiento: almacenamiento,
+                _Talla: talla
+          }
+          const oSchema = new ProductoDB(dSchemaRopa)
+          await oSchema.save()
+        }).catch((mensaje) => {
+            res.send(mensaje)
+        })
+    }
+
+    private addMovil = async (req: Request, res: Response) => {
+        const {id, nombre, categoria, precio, nota, almacenamiento, GBRam, Megapixeles} = req.body
+        await db.conectarBD()
+        .then( async (mensaje) => {
+            dSchemaMovil = {
+                _id: id,
+                _NombreProducto: nombre,
+                _CategoriaProducto: categoria,
+                _PrecioBase: precio,
+                _NotaMedia: nota,
+                _Almacenamiento: almacenamiento,
+                _GBRam: GBRam,
+                _Megapixeles: Megapixeles
+          }
+          const oSchema = new ProductoDB(dSchemaMovil)
+          await oSchema.save()
+        }).catch((mensaje) => {
+            res.send(mensaje)
+        })
+    }
+
+    private addProcesador = async (req: Request, res: Response) => {
+        const {id, nombre, categoria, precio, nota, almacenamiento, GHz} = req.body
+        await db.conectarBD()
+        .then( async (mensaje) => {
+            dSchemaProcesador = {
+                _id: id,
+                _NombreProducto: nombre,
+                _CategoriaProducto: categoria,
+                _PrecioBase: precio,
+                _NotaMedia: nota,
+                _Almacenamiento: almacenamiento,
+                _GHz: GHz
+          }
+          const oSchema = new ProductoDB(dSchemaProcesador)
           await oSchema.save()
         }).catch((mensaje) => {
             res.send(mensaje)
@@ -336,7 +429,7 @@ class DatoRoutes {
     }
 
     private addAlmacen = async (req: Request, res: Response) => {
-        const {id, posicion, capacidadMax, mozos} = req.body
+        const {id, posicion, capacidadMax, mozos, repartidores} = req.body
         const valor = req.params.id
         await db.conectarBD()
         .then( async (mensaje) => {
@@ -345,6 +438,7 @@ class DatoRoutes {
                 _Posicion: posicion,
                 _CapacidadMax: capacidadMax,
                 _Mozos: mozos,
+                _Repartidores: repartidores
           }
           const oSchema = new ProductoDB(dSchemaProducto)
           await oSchema.save()
@@ -383,9 +477,12 @@ class DatoRoutes {
     
         this._router.get('/Productos/get', this.getProd)
         this._router.post('/Productos/add', this.addProd)
+        this._router.post('/Productos/ropa/add', this.addRopa)
+        this._router.post('/Productos/movil/add', this.addMovil)
+        this._router.post('/Productos/procesador/add', this.addProcesador)
         this._router.get('/Productos/search/:id', this.searchProd)
         this._router.get('/Productos/prueba', this.prueba)
-        this._router.get('/Productos/delete/:id', this.deleteProd)
+        this._router.delete('/Productos/delete/:id', this.deleteProd)
 
         this._router.get('/Almacenes/get', this.getAlmacen)
         this._router.post('/Almacenes/add', this.addAlmacen)

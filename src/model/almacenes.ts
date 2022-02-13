@@ -15,6 +15,10 @@ const almacenesSchema = new Schema({
 
     _Mozos: {
         type: Array
+    },
+    
+    _Repartidores: {
+        type: Array
     }
 })
 
@@ -23,6 +27,7 @@ export type iAlmacen = {
     _Posicion: number | null,
     _CapacidadMax: number | null,
     _Mozos: Array<any> | null
+    _Repartidores: Array<any> | null
   }
 
 // La colección de la BD (Plural siempre)
