@@ -13,7 +13,7 @@ const productosSchema = new mongoose_1.Schema({
     _CategoriaProducto: {
         type: String
     },
-    _Precio: {
+    _PrecioBase: {
         type: Number
     },
     _NotaMedia: {
@@ -21,7 +21,19 @@ const productosSchema = new mongoose_1.Schema({
     },
     _Almacenamiento: {
         type: Array
-    }
+    },
+    _Talla: {
+        type: String
+    },
+    _GBRam: {
+        type: Number
+    },
+    _Megapixeles: {
+        type: Number
+    },
+    _GHz: {
+        type: Number
+    },
 });
 // La colección de la BD (Plural siempre)
 exports.ProductoDB = (0, mongoose_1.model)('products', productosSchema);

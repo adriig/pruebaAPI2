@@ -49,15 +49,44 @@ let dSchemaProducto = {
     _id: null,
     _NombreProducto: null,
     _CategoriaProducto: null,
-    _Precio: null,
+    _PrecioBase: null,
     _NotaMedia: null,
     _Almacenamiento: null
+};
+let dSchemaRopa = {
+    _id: null,
+    _NombreProducto: null,
+    _CategoriaProducto: null,
+    _PrecioBase: null,
+    _NotaMedia: null,
+    _Almacenamiento: null,
+    _Talla: null,
+};
+let dSchemaMovil = {
+    _id: null,
+    _NombreProducto: null,
+    _CategoriaProducto: null,
+    _PrecioBase: null,
+    _NotaMedia: null,
+    _Almacenamiento: null,
+    _GBRam: null,
+    _Megapixeles: null,
+};
+let dSchemaProcesador = {
+    _id: null,
+    _NombreProducto: null,
+    _CategoriaProducto: null,
+    _PrecioBase: null,
+    _NotaMedia: null,
+    _Almacenamiento: null,
+    _GHz: null
 };
 let dSchemaAlmacen = {
     _id: null,
     _Posicion: null,
     _CapacidadMax: null,
     _Mozos: null,
+    _Repartidores: null
 };
 class DatoRoutes {
     constructor() {
@@ -271,11 +300,69 @@ class DatoRoutes {
                     _id: id,
                     _NombreProducto: nombre,
                     _CategoriaProducto: categoria,
-                    _Precio: precio,
+                    _PrecioBase: precio,
                     _NotaMedia: nota,
                     _Almacenamiento: almacenamiento
                 };
                 const oSchema = new productos_1.ProductoDB(dSchemaProducto);
+                yield oSchema.save();
+            })).catch((mensaje) => {
+                res.send(mensaje);
+            });
+        });
+        this.addRopa = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const { id, nombre, categoria, precio, nota, almacenamiento, talla } = req.body;
+            yield database_1.db.conectarBD()
+                .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
+                dSchemaRopa = {
+                    _id: id,
+                    _NombreProducto: nombre,
+                    _CategoriaProducto: categoria,
+                    _PrecioBase: precio,
+                    _NotaMedia: nota,
+                    _Almacenamiento: almacenamiento,
+                    _Talla: talla
+                };
+                const oSchema = new productos_1.ProductoDB(dSchemaRopa);
+                yield oSchema.save();
+            })).catch((mensaje) => {
+                res.send(mensaje);
+            });
+        });
+        this.addMovil = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const { id, nombre, categoria, precio, nota, almacenamiento, GBRam, Megapixeles } = req.body;
+            yield database_1.db.conectarBD()
+                .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
+                dSchemaMovil = {
+                    _id: id,
+                    _NombreProducto: nombre,
+                    _CategoriaProducto: categoria,
+                    _PrecioBase: precio,
+                    _NotaMedia: nota,
+                    _Almacenamiento: almacenamiento,
+                    _GBRam: GBRam,
+                    _Megapixeles: Megapixeles
+                };
+                const oSchema = new productos_1.ProductoDB(dSchemaMovil);
+                yield oSchema.save();
+            })).catch((mensaje) => {
+                res.send(mensaje);
+            });
+        });
+        this.addProcesador = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const { id, nombre, categoria, precio, nota, almacenamiento, GHz } = req.body;
+            yield database_1.db.conectarBD()
+                .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
+                dSchemaProcesador = {
+                    _id: id,
+                    _NombreProducto: nombre,
+                    _CategoriaProducto: categoria,
+                    _PrecioBase: precio,
+                    _NotaMedia: nota,
+                    _Almacenamiento: almacenamiento,
+                    _GHz: GHz
+                };
+                const oSchema = new productos_1.ProductoDB(dSchemaProcesador);
                 yield oSchema.save();
             })).catch((mensaje) => {
                 res.send(mensaje);
@@ -310,7 +397,7 @@ class DatoRoutes {
             });
         });
         this.addAlmacen = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const { id, posicion, capacidadMax, mozos } = req.body;
+            const { id, posicion, capacidadMax, mozos, repartidores } = req.body;
             const valor = req.params.id;
             yield database_1.db.conectarBD()
                 .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
@@ -319,6 +406,7 @@ class DatoRoutes {
                     _Posicion: posicion,
                     _CapacidadMax: capacidadMax,
                     _Mozos: mozos,
+                    _Repartidores: repartidores
                 };
                 const oSchema = new productos_1.ProductoDB(dSchemaProducto);
                 yield oSchema.save();
@@ -357,9 +445,12 @@ class DatoRoutes {
         this._router.get('/Empleados/delete/:id', this.deleteEmp);
         this._router.get('/Productos/get', this.getProd);
         this._router.post('/Productos/add', this.addProd);
+        this._router.post('/Productos/ropa/add', this.addRopa);
+        this._router.post('/Productos/movil/add', this.addMovil);
+        this._router.post('/Productos/procesador/add', this.addProcesador);
         this._router.get('/Productos/search/:id', this.searchProd);
         this._router.get('/Productos/prueba', this.prueba);
-        this._router.get('/Productos/delete/:id', this.deleteProd);
+        this._router.delete('/Productos/delete/:id', this.deleteProd);
         this._router.get('/Almacenes/get', this.getAlmacen);
         this._router.post('/Almacenes/add', this.addAlmacen);
         this._router.get('/Almacenes/search/:id', this.searchAlmacen);

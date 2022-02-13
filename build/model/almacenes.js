@@ -15,6 +15,9 @@ const almacenesSchema = new mongoose_1.Schema({
     },
     _Mozos: {
         type: Array
+    },
+    _Repartidores: {
+        type: Array
     }
 });
 // La colección de la BD (Plural siempre)
