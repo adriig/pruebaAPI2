@@ -78,4 +78,4 @@ export type iProcesador = {
     _GHz: number | null
 }
 // La colección de la BD (Plural siempre)
-export const ProductoDB = model('products', productosSchema)
+export const ProductoDB = model('productoss', productosSchema)

@@ -36,4 +36,4 @@ const productosSchema = new mongoose_1.Schema({
     },
 });
 // La colección de la BD (Plural siempre)
-exports.ProductoDB = (0, mongoose_1.model)('products', productosSchema);
+exports.ProductoDB = (0, mongoose_1.model)('productoss', productosSchema);
