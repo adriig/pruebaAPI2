@@ -25,7 +25,7 @@ const productosSchema = new Schema({
         type: Array
     },
     _Talla: {
-        type: String
+        type: Number
     },
     _GBRam: {
         type: Number
@@ -54,6 +54,10 @@ export type iProducto2 = {
     _PrecioBase: number,
     _NotaMedia: number,
     _Almacenamiento: [],
+    _Talla: number,
+    _GBRam: number,
+    _Megapixeles: number,
+    _GHz: number
 }
 
 export type iRopa = {
@@ -63,7 +67,7 @@ export type iRopa = {
     _PrecioBase: number | null,
     _NotaMedia: number | null,
     _Almacenamiento: Array<any> | null,
-    _Talla: string | null
+    _Talla: number | null
 }
 
 export type iMovil = {

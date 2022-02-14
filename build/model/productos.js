@@ -23,7 +23,7 @@ const productosSchema = new mongoose_1.Schema({
         type: Array
     },
     _Talla: {
-        type: String
+        type: Number
     },
     _GBRam: {
         type: Number

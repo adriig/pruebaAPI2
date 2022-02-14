@@ -289,19 +289,19 @@ class DatoRoutes {
             const query  = await ProductoDB.find({})
             let query2: Array<iProducto2> = []
             for(dProducto of query) {
-               let miProducto = new Producto(dProducto._id, dProducto._NombreProducto, dProducto._CategoriaProducto, dProducto._PrecioBase, dProducto._NotaMedia, [])
-               let coste = miProducto.calculoPrecio() 
+               let miProducto
+               if(dProducto._CategoriaProducto == "Movil") {
+                    miProducto = new Movil(dProducto._id, dProducto._NombreProducto, dProducto._CategoriaProducto, dProducto._PrecioBase, dProducto._NotaMedia, dProducto._Almacenamiento, dProducto._GBRam, dProducto._Megapixeles)
+                } else if (dProducto._CategoriaProducto == "Procesador") {
+                    miProducto = new procesador(dProducto._id, dProducto._NombreProducto, dProducto._CategoriaProducto, dProducto._PrecioBase, dProducto._NotaMedia, dProducto._Almacenamiento, dProducto._GHz)
+                } else if (dProducto._CategoriaProducto == "Ropa") {
+                    miProducto = new Ropa(dProducto._id, dProducto._NombreProducto, dProducto._CategoriaProducto, dProducto._PrecioBase, dProducto._NotaMedia, dProducto._Almacenamiento, dProducto._Talla)
+                } else {
+                    miProducto = new Producto(dProducto._id, dProducto._NombreProducto, dProducto._CategoriaProducto, dProducto._PrecioBase, dProducto._NotaMedia, dProducto._Almacenamiento)
+                }
+                let coste = miProducto.calculoPrecio() 
                dProducto._PrecioBase=coste
                query2.push(dProducto)
-               /*if(Producto._CategoriaProducto == "Movil") {
-                    miProducto = new Movil(Producto._id, Producto._NombreProducto, Producto._CategoriaProducto, Producto._PrecioBase, Producto._NotaMedia, Producto._Almacenamiento, Producto._GBram, Producto._Megapixeles)
-                } else if (Producto._CategoriaProducto == "Procesador") {
-                    miProducto = new procesador(Producto._id, Producto._NombreProducto, Producto._CategoriaProducto, Producto._PrecioBase, Producto._NotaMedia, Producto._Almacenamiento, Producto._GHz)
-                } else if (Producto._CategoriaProducto == "Ropa") {
-                    miProducto = new Ropa(Producto._id, Producto._NombreProducto, Producto._CategoriaProducto, Producto._PrecioBase, Producto._NotaMedia, Producto._Almacenamiento, Producto._Talla)
-                } else {
-                    miProducto = new Producto(Producto._id, Producto._NombreProducto, Producto._CategoriaProducto, Producto._PrecioBase, Producto._NotaMedia, Producto._Almacenamiento)
-                }*/
                 //Producto._PrecioBase= miProducto.calculoPrecio()
                 //console.log(Producto._PrecioBase)
             }

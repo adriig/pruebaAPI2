@@ -17,6 +17,9 @@ const database_1 = require("../database/database");
 const productos_1 = require("../model/productos");
 const almacenes_1 = require("../model/almacenes");
 const producto_1 = require("../classes/productos/producto");
+const movil_1 = require("../classes/productos/movil");
+const procesador_1 = require("../classes/productos/procesador");
+const ropa_1 = require("../classes/productos/ropa");
 let dSchemaCliente = {
     _id: null,
     _nombreCliente: null,
@@ -265,19 +268,22 @@ class DatoRoutes {
                 const query = yield productos_1.ProductoDB.find({});
                 let query2 = [];
                 for (dProducto of query) {
-                    let miProducto = new producto_1.Producto(dProducto._id, dProducto._NombreProducto, dProducto._CategoriaProducto, dProducto._PrecioBase, dProducto._NotaMedia, []);
+                    let miProducto;
+                    if (dProducto._CategoriaProducto == "Movil") {
+                        miProducto = new movil_1.Movil(dProducto._id, dProducto._NombreProducto, dProducto._CategoriaProducto, dProducto._PrecioBase, dProducto._NotaMedia, dProducto._Almacenamiento, dProducto._GBRam, dProducto._Megapixeles);
+                    }
+                    else if (dProducto._CategoriaProducto == "Procesador") {
+                        miProducto = new procesador_1.procesador(dProducto._id, dProducto._NombreProducto, dProducto._CategoriaProducto, dProducto._PrecioBase, dProducto._NotaMedia, dProducto._Almacenamiento, dProducto._GHz);
+                    }
+                    else if (dProducto._CategoriaProducto == "Ropa") {
+                        miProducto = new ropa_1.Ropa(dProducto._id, dProducto._NombreProducto, dProducto._CategoriaProducto, dProducto._PrecioBase, dProducto._NotaMedia, dProducto._Almacenamiento, dProducto._Talla);
+                    }
+                    else {
+                        miProducto = new producto_1.Producto(dProducto._id, dProducto._NombreProducto, dProducto._CategoriaProducto, dProducto._PrecioBase, dProducto._NotaMedia, dProducto._Almacenamiento);
+                    }
                     let coste = miProducto.calculoPrecio();
                     dProducto._PrecioBase = coste;
                     query2.push(dProducto);
-                    /*if(Producto._CategoriaProducto == "Movil") {
-                         miProducto = new Movil(Producto._id, Producto._NombreProducto, Producto._CategoriaProducto, Producto._PrecioBase, Producto._NotaMedia, Producto._Almacenamiento, Producto._GBram, Producto._Megapixeles)
-                     } else if (Producto._CategoriaProducto == "Procesador") {
-                         miProducto = new procesador(Producto._id, Producto._NombreProducto, Producto._CategoriaProducto, Producto._PrecioBase, Producto._NotaMedia, Producto._Almacenamiento, Producto._GHz)
-                     } else if (Producto._CategoriaProducto == "Ropa") {
-                         miProducto = new Ropa(Producto._id, Producto._NombreProducto, Producto._CategoriaProducto, Producto._PrecioBase, Producto._NotaMedia, Producto._Almacenamiento, Producto._Talla)
-                     } else {
-                         miProducto = new Producto(Producto._id, Producto._NombreProducto, Producto._CategoriaProducto, Producto._PrecioBase, Producto._NotaMedia, Producto._Almacenamiento)
-                     }*/
                     //Producto._PrecioBase= miProducto.calculoPrecio()
                     //console.log(Producto._PrecioBase)
                 }
