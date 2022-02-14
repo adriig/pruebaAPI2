@@ -370,17 +370,17 @@ class DatoRoutes {
     }
 
     private addRopa = async (req: Request, res: Response) => {
-        const {id, nombre, categoria, precio, nota, almacenamiento, talla} = req.body
+        const {_id, _NombreProducto, _CategoriaProducto, _PrecioBase, _NotaMedia, _Almacenamiento, _Talla} = req.body
         await db.conectarBD()
         .then( async (mensaje) => {
             dSchemaRopa = {
-                _id: id,
-                _NombreProducto: nombre,
-                _CategoriaProducto: categoria,
-                _PrecioBase: precio,
-                _NotaMedia: nota,
-                _Almacenamiento: almacenamiento,
-                _Talla: talla
+                _id: _id,
+                _NombreProducto: _NombreProducto,
+                _CategoriaProducto: _CategoriaProducto,
+                _PrecioBase: _PrecioBase,
+                _NotaMedia: _NotaMedia,
+                _Almacenamiento: _Almacenamiento,
+                _Talla: _Talla
           }
           const oSchema = new ProductoDB(dSchemaRopa)
           await oSchema.save()
@@ -390,18 +390,18 @@ class DatoRoutes {
     }
 
     private addMovil = async (req: Request, res: Response) => {
-        const {id, nombre, categoria, precio, nota, almacenamiento, GBRam, Megapixeles} = req.body
+        const {_id, _NombreProducto, _CategoriaProducto, _PrecioBase, _NotaMedia, _Almacenamiento, _GBRam, _Megapixeles} = req.body
         await db.conectarBD()
         .then( async (mensaje) => {
             dSchemaMovil = {
-                _id: id,
-                _NombreProducto: nombre,
-                _CategoriaProducto: categoria,
-                _PrecioBase: precio,
-                _NotaMedia: nota,
-                _Almacenamiento: almacenamiento,
-                _GBRam: GBRam,
-                _Megapixeles: Megapixeles
+                _id: _id,
+                _NombreProducto: _NombreProducto,
+                _CategoriaProducto: _CategoriaProducto,
+                _PrecioBase: _PrecioBase,
+                _NotaMedia: _NotaMedia,
+                _Almacenamiento: _Almacenamiento,
+                _GBRam: _GBRam,
+                _Megapixeles: _Megapixeles
           }
           const oSchema = new ProductoDB(dSchemaMovil)
           await oSchema.save()
@@ -411,17 +411,17 @@ class DatoRoutes {
     }
 
     private addProcesador = async (req: Request, res: Response) => {
-        const {id, nombre, categoria, precio, nota, almacenamiento, GHz} = req.body
+        const {_id, _NombreProducto, _CategoriaProducto, _PrecioBase, _NotaMedia, _Almacenamiento, _GHz} = req.body
         await db.conectarBD()
         .then( async (mensaje) => {
             dSchemaProcesador = {
-                _id: id,
-                _NombreProducto: nombre,
-                _CategoriaProducto: categoria,
-                _PrecioBase: precio,
-                _NotaMedia: nota,
-                _Almacenamiento: almacenamiento,
-                _GHz: GHz
+                _id: _id,
+                _NombreProducto: _NombreProducto,
+                _CategoriaProducto: _CategoriaProducto,
+                _PrecioBase: _PrecioBase,
+                _NotaMedia: _NotaMedia,
+                _Almacenamiento: _Almacenamiento,
+                _GHz: _GHz
           }
           const oSchema = new ProductoDB(dSchemaProcesador)
           await oSchema.save()

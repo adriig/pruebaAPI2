@@ -347,17 +347,17 @@ class DatoRoutes {
             });
         });
         this.addRopa = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const { id, nombre, categoria, precio, nota, almacenamiento, talla } = req.body;
+            const { _id, _NombreProducto, _CategoriaProducto, _PrecioBase, _NotaMedia, _Almacenamiento, _Talla } = req.body;
             yield database_1.db.conectarBD()
                 .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
                 dSchemaRopa = {
-                    _id: id,
-                    _NombreProducto: nombre,
-                    _CategoriaProducto: categoria,
-                    _PrecioBase: precio,
-                    _NotaMedia: nota,
-                    _Almacenamiento: almacenamiento,
-                    _Talla: talla
+                    _id: _id,
+                    _NombreProducto: _NombreProducto,
+                    _CategoriaProducto: _CategoriaProducto,
+                    _PrecioBase: _PrecioBase,
+                    _NotaMedia: _NotaMedia,
+                    _Almacenamiento: _Almacenamiento,
+                    _Talla: _Talla
                 };
                 const oSchema = new productos_1.ProductoDB(dSchemaRopa);
                 yield oSchema.save();
@@ -366,18 +366,18 @@ class DatoRoutes {
             });
         });
         this.addMovil = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const { id, nombre, categoria, precio, nota, almacenamiento, GBRam, Megapixeles } = req.body;
+            const { _id, _NombreProducto, _CategoriaProducto, _PrecioBase, _NotaMedia, _Almacenamiento, _GBRam, _Megapixeles } = req.body;
             yield database_1.db.conectarBD()
                 .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
                 dSchemaMovil = {
-                    _id: id,
-                    _NombreProducto: nombre,
-                    _CategoriaProducto: categoria,
-                    _PrecioBase: precio,
-                    _NotaMedia: nota,
-                    _Almacenamiento: almacenamiento,
-                    _GBRam: GBRam,
-                    _Megapixeles: Megapixeles
+                    _id: _id,
+                    _NombreProducto: _NombreProducto,
+                    _CategoriaProducto: _CategoriaProducto,
+                    _PrecioBase: _PrecioBase,
+                    _NotaMedia: _NotaMedia,
+                    _Almacenamiento: _Almacenamiento,
+                    _GBRam: _GBRam,
+                    _Megapixeles: _Megapixeles
                 };
                 const oSchema = new productos_1.ProductoDB(dSchemaMovil);
                 yield oSchema.save();
@@ -386,17 +386,17 @@ class DatoRoutes {
             });
         });
         this.addProcesador = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const { id, nombre, categoria, precio, nota, almacenamiento, GHz } = req.body;
+            const { _id, _NombreProducto, _CategoriaProducto, _PrecioBase, _NotaMedia, _Almacenamiento, _GHz } = req.body;
             yield database_1.db.conectarBD()
                 .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
                 dSchemaProcesador = {
-                    _id: id,
-                    _NombreProducto: nombre,
-                    _CategoriaProducto: categoria,
-                    _PrecioBase: precio,
-                    _NotaMedia: nota,
-                    _Almacenamiento: almacenamiento,
-                    _GHz: GHz
+                    _id: _id,
+                    _NombreProducto: _NombreProducto,
+                    _CategoriaProducto: _CategoriaProducto,
+                    _PrecioBase: _PrecioBase,
+                    _NotaMedia: _NotaMedia,
+                    _Almacenamiento: _Almacenamiento,
+                    _GHz: _GHz
                 };
                 const oSchema = new productos_1.ProductoDB(dSchemaProcesador);
                 yield oSchema.save();
