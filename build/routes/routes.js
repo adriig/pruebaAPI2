@@ -20,6 +20,7 @@ const producto_1 = require("../classes/productos/producto");
 const movil_1 = require("../classes/productos/movil");
 const procesador_1 = require("../classes/productos/procesador");
 const ropa_1 = require("../classes/productos/ropa");
+const usuarios_1 = require("../model/usuarios");
 let dSchemaCliente = {
     _id: null,
     _nombreCliente: null,
@@ -91,6 +92,12 @@ let dSchemaAlmacen = {
     _CapacidadMax: null,
     _Mozos: null,
     _Repartidores: null
+};
+let dSchemaUser = {
+    _id: null,
+    _Nombre: null,
+    _Contraseña: null,
+    _Tipo: null
 };
 class DatoRoutes {
     constructor() {
@@ -385,6 +392,57 @@ class DatoRoutes {
                 res.send(mensaje);
             });
         });
+        this.addUsers = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const { _id, _Nombre, _Contraseña, _Tipo } = req.body;
+            yield database_1.db.conectarBD()
+                .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
+                dSchemaUser = {
+                    _id: _id,
+                    _Nombre: _Nombre,
+                    _Contraseña: _Contraseña,
+                    _Tipo: _Tipo,
+                };
+                const oSchema = new productos_1.ProductoDB(dSchemaUser);
+                yield oSchema.save();
+            })).catch((mensaje) => {
+                res.send(mensaje);
+            });
+        });
+        this.searchUsers = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const valor = req.params.id;
+            yield database_1.db.conectarBD()
+                .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
+                console.log(mensaje);
+                const query = yield usuarios_1.UsersDB.findOne({ _id: valor });
+                res.json(query);
+            }))
+                .catch((mensaje) => {
+                res.send(mensaje);
+            });
+        });
+        this.deleteUsers = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const valor = req.params.id;
+            yield database_1.db.conectarBD()
+                .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
+                console.log(mensaje);
+                const query = yield usuarios_1.UsersDB.findOneAndDelete({ _id: valor });
+                res.json(query);
+            }))
+                .catch((mensaje) => {
+                res.send(mensaje);
+            });
+        });
+        this.listUsers = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            yield database_1.db.conectarBD()
+                .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
+                console.log(mensaje);
+                const query = yield usuarios_1.UsersDB.find({});
+                res.json(query);
+            }))
+                .catch((mensaje) => {
+                res.send(mensaje);
+            });
+        });
         this.addProcesador = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { _id, _NombreProducto, _CategoriaProducto, _PrecioBase, _NotaMedia, _Almacenamiento, _GHz } = req.body;
             yield database_1.db.conectarBD()
@@ -488,6 +546,10 @@ class DatoRoutes {
         this._router.get('/Productos/search/:id', this.searchProd);
         this._router.get('/Productos/prueba', this.prueba);
         this._router.delete('/Productos/delete/:id', this.deleteProd);
+        this._router.post('/Users/add', this.addUsers);
+        this._router.get('/Users/search/:id', this.addUsers);
+        this._router.delete('/Users/delete', this.deleteUsers);
+        this._router.get('/Users/list', this.listUsers);
         this._router.get('/Almacenes/get', this.getAlmacen);
         this._router.post('/Almacenes/add', this.addAlmacen);
         this._router.get('/Almacenes/search/:id', this.searchAlmacen);

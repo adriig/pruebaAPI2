@@ -8,6 +8,7 @@ import { Producto } from '../classes/productos/producto'
 import { Movil } from '../classes/productos/movil'
 import { procesador } from '../classes/productos/procesador'
 import { Ropa } from '../classes/productos/ropa'
+import { iUsers, UsersDB } from '../model/usuarios'
 
 let dSchemaCliente: iCliente = {
     _id: null,
@@ -88,6 +89,13 @@ let dSchemaAlmacen: iAlmacen = {
     _CapacidadMax: null,
     _Mozos: null,
     _Repartidores: null
+}
+
+let dSchemaUser: iUsers = {
+    _id: null,
+    _Nombre: null,
+    _Contraseña: null,
+    _Tipo: null
 }
 
 class DatoRoutes {
@@ -410,6 +418,61 @@ class DatoRoutes {
         })
     }
 
+    private addUsers = async (req: Request, res: Response) => {
+        const {_id, _Nombre, _Contraseña, _Tipo} = req.body
+        await db.conectarBD()
+        .then( async (mensaje) => {
+            dSchemaUser = {
+                _id: _id,
+                _Nombre: _Nombre,
+                _Contraseña: _Contraseña,
+                _Tipo: _Tipo,
+          }
+          const oSchema = new ProductoDB(dSchemaUser)
+          await oSchema.save()
+        }).catch((mensaje) => {
+            res.send(mensaje)
+        })
+    }
+
+    private searchUsers = async (req: Request, res: Response) => {
+        const valor = req.params.id
+        await db.conectarBD()
+        .then( async (mensaje) => {
+            console.log(mensaje)
+            const query  = await UsersDB.findOne({_id: valor})
+            res.json(query)
+        })
+        .catch((mensaje) => {
+            res.send(mensaje)
+        })
+    }
+
+    private deleteUsers = async (req: Request, res: Response) => {
+        const valor = req.params.id
+        await db.conectarBD()
+        .then( async (mensaje) => {
+            console.log(mensaje)
+            const query  = await UsersDB.findOneAndDelete({_id: valor})
+            res.json(query)
+        })
+        .catch((mensaje) => {
+            res.send(mensaje)
+        })
+    }
+
+    private listUsers = async (req: Request, res: Response) => {
+        await db.conectarBD()
+        .then( async (mensaje) => {
+            console.log(mensaje)
+            const query  = await UsersDB.find({})
+            res.json(query)
+        })
+        .catch((mensaje) => {
+            res.send(mensaje)
+        })
+    }
+
     private addProcesador = async (req: Request, res: Response) => {
         const {_id, _NombreProducto, _CategoriaProducto, _PrecioBase, _NotaMedia, _Almacenamiento, _GHz} = req.body
         await db.conectarBD()
@@ -518,6 +581,11 @@ class DatoRoutes {
         this._router.get('/Productos/search/:id', this.searchProd)
         this._router.get('/Productos/prueba', this.prueba)
         this._router.delete('/Productos/delete/:id', this.deleteProd)
+
+        this._router.post('/Users/add', this.addUsers)
+        this._router.get('/Users/search/:id', this.addUsers)
+        this._router.delete('/Users/delete', this.deleteUsers)
+        this._router.get('/Users/list', this.listUsers)
 
         this._router.get('/Almacenes/get', this.getAlmacen)
         this._router.post('/Almacenes/add', this.addAlmacen)
