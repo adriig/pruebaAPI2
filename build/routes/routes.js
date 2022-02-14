@@ -293,16 +293,16 @@ class DatoRoutes {
             });
         });
         this.addProd = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const { id, nombre, categoria, precio, nota, almacenamiento } = req.body;
+            const { _id, _NombreProducto, _CategoriaProducto, _PrecioBase, _NotaMedia, _Almacenamiento } = req.body;
             yield database_1.db.conectarBD()
                 .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
                 dSchemaProducto = {
-                    _id: id,
-                    _NombreProducto: nombre,
-                    _CategoriaProducto: categoria,
-                    _PrecioBase: precio,
-                    _NotaMedia: nota,
-                    _Almacenamiento: almacenamiento
+                    _id: _id,
+                    _NombreProducto: _NombreProducto,
+                    _CategoriaProducto: _CategoriaProducto,
+                    _PrecioBase: _PrecioBase,
+                    _NotaMedia: _NotaMedia,
+                    _Almacenamiento: _Almacenamiento
                 };
                 const oSchema = new productos_1.ProductoDB(dSchemaProducto);
                 yield oSchema.save();

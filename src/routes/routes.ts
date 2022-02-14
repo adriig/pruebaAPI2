@@ -317,16 +317,16 @@ class DatoRoutes {
     }
 
     private addProd = async (req: Request, res: Response) => {
-        const {id, nombre, categoria, precio, nota, almacenamiento} = req.body
+        const {_id, _NombreProducto, _CategoriaProducto, _PrecioBase, _NotaMedia, _Almacenamiento} = req.body
         await db.conectarBD()
         .then( async (mensaje) => {
             dSchemaProducto = {
-                _id: id,
-                _NombreProducto: nombre,
-                _CategoriaProducto: categoria,
-                _PrecioBase: precio,
-                _NotaMedia: nota,
-                _Almacenamiento: almacenamiento
+                _id: _id,
+                _NombreProducto: _NombreProducto,
+                _CategoriaProducto: _CategoriaProducto,
+                _PrecioBase: _PrecioBase,
+                _NotaMedia: _NotaMedia,
+                _Almacenamiento: _Almacenamiento
           }
           const oSchema = new ProductoDB(dSchemaProducto)
           await oSchema.save()
