@@ -47,6 +47,15 @@ export type iProducto = {
     _Almacenamiento: Array<any> | null,
 }
 
+export type iProducto2 = {
+    _id: number, // para acceder en la subclase
+    _NombreProducto: string,
+    _CategoriaProducto: string,
+    _PrecioBase: number,
+    _NotaMedia: number,
+    _Almacenamiento: [],
+}
+
 export type iRopa = {
     _id: number | null, // para acceder en la subclase
     _NombreProducto: string | null,

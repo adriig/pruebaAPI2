@@ -2,8 +2,12 @@ import {Request, Response, Router } from 'express'
 import { ClienteDB, iCliente } from '../model/clientes'
 import { EmpleadoDB, iEmpleado, iMozo, iRepartidor } from '../model/empleados'
 import { db } from '../database/database'
-import { ProductoDB, iProducto, iMovil, iProcesador, iRopa } from '../model/productos'
+import { ProductoDB, iProducto, iMovil, iProcesador, iRopa, iProducto2 } from '../model/productos'
 import { AlmacenesDB, iAlmacen } from '../model/almacenes'
+import { Producto } from '../classes/productos/producto'
+import { Movil } from '../classes/productos/movil'
+import { procesador } from '../classes/productos/procesador'
+import { Ropa } from '../classes/productos/ropa'
 
 let dSchemaCliente: iCliente = {
     _id: null,
@@ -278,6 +282,36 @@ class DatoRoutes {
         })
     }
 
+    private getPrecios = async (req: Request, res: Response) => {
+        await db.conectarBD()
+        .then( async (mensaje) => {
+            let dProducto: iProducto2
+            const query  = await ProductoDB.find({})
+            let query2: Array<iProducto2> = []
+            for(dProducto of query) {
+               let miProducto = new Producto(dProducto._id, dProducto._NombreProducto, dProducto._CategoriaProducto, dProducto._PrecioBase, dProducto._NotaMedia, [])
+               let coste = miProducto.calculoPrecio() 
+               dProducto._PrecioBase=coste
+               query2.push(dProducto)
+               /*if(Producto._CategoriaProducto == "Movil") {
+                    miProducto = new Movil(Producto._id, Producto._NombreProducto, Producto._CategoriaProducto, Producto._PrecioBase, Producto._NotaMedia, Producto._Almacenamiento, Producto._GBram, Producto._Megapixeles)
+                } else if (Producto._CategoriaProducto == "Procesador") {
+                    miProducto = new procesador(Producto._id, Producto._NombreProducto, Producto._CategoriaProducto, Producto._PrecioBase, Producto._NotaMedia, Producto._Almacenamiento, Producto._GHz)
+                } else if (Producto._CategoriaProducto == "Ropa") {
+                    miProducto = new Ropa(Producto._id, Producto._NombreProducto, Producto._CategoriaProducto, Producto._PrecioBase, Producto._NotaMedia, Producto._Almacenamiento, Producto._Talla)
+                } else {
+                    miProducto = new Producto(Producto._id, Producto._NombreProducto, Producto._CategoriaProducto, Producto._PrecioBase, Producto._NotaMedia, Producto._Almacenamiento)
+                }*/
+                //Producto._PrecioBase= miProducto.calculoPrecio()
+                //console.log(Producto._PrecioBase)
+            }
+            res.json(query2)
+        })
+        .catch((mensaje) => {
+            res.send(mensaje)
+        })
+    }
+
     private searchProd = async (req: Request, res: Response) => {
         const valor = req.params.id
         await db.conectarBD()
@@ -476,6 +510,7 @@ class DatoRoutes {
         this._router.get('/Empleados/delete/:id', this.deleteEmp)
     
         this._router.get('/Productos/get', this.getProd)
+        this._router.get('/Productos/precios', this.getPrecios)
         this._router.post('/Productos/add', this.addProd)
         this._router.post('/Productos/ropa/add', this.addRopa)
         this._router.post('/Productos/movil/add', this.addMovil)

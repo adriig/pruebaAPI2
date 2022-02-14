@@ -16,6 +16,7 @@ const empleados_1 = require("../model/empleados");
 const database_1 = require("../database/database");
 const productos_1 = require("../model/productos");
 const almacenes_1 = require("../model/almacenes");
+const producto_1 = require("../classes/productos/producto");
 let dSchemaCliente = {
     _id: null,
     _nombreCliente: null,
@@ -257,6 +258,35 @@ class DatoRoutes {
                 res.send(mensaje);
             });
         });
+        this.getPrecios = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            yield database_1.db.conectarBD()
+                .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
+                let dProducto;
+                const query = yield productos_1.ProductoDB.find({});
+                let query2 = [];
+                for (dProducto of query) {
+                    let miProducto = new producto_1.Producto(dProducto._id, dProducto._NombreProducto, dProducto._CategoriaProducto, dProducto._PrecioBase, dProducto._NotaMedia, []);
+                    let coste = miProducto.calculoPrecio();
+                    dProducto._PrecioBase = coste;
+                    query2.push(dProducto);
+                    /*if(Producto._CategoriaProducto == "Movil") {
+                         miProducto = new Movil(Producto._id, Producto._NombreProducto, Producto._CategoriaProducto, Producto._PrecioBase, Producto._NotaMedia, Producto._Almacenamiento, Producto._GBram, Producto._Megapixeles)
+                     } else if (Producto._CategoriaProducto == "Procesador") {
+                         miProducto = new procesador(Producto._id, Producto._NombreProducto, Producto._CategoriaProducto, Producto._PrecioBase, Producto._NotaMedia, Producto._Almacenamiento, Producto._GHz)
+                     } else if (Producto._CategoriaProducto == "Ropa") {
+                         miProducto = new Ropa(Producto._id, Producto._NombreProducto, Producto._CategoriaProducto, Producto._PrecioBase, Producto._NotaMedia, Producto._Almacenamiento, Producto._Talla)
+                     } else {
+                         miProducto = new Producto(Producto._id, Producto._NombreProducto, Producto._CategoriaProducto, Producto._PrecioBase, Producto._NotaMedia, Producto._Almacenamiento)
+                     }*/
+                    //Producto._PrecioBase= miProducto.calculoPrecio()
+                    //console.log(Producto._PrecioBase)
+                }
+                res.json(query2);
+            }))
+                .catch((mensaje) => {
+                res.send(mensaje);
+            });
+        });
         this.searchProd = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const valor = req.params.id;
             yield database_1.db.conectarBD()
@@ -444,6 +474,7 @@ class DatoRoutes {
         this._router.get('/Empleados/search/:id', this.searchEmp);
         this._router.get('/Empleados/delete/:id', this.deleteEmp);
         this._router.get('/Productos/get', this.getProd);
+        this._router.get('/Productos/precios', this.getPrecios);
         this._router.post('/Productos/add', this.addProd);
         this._router.post('/Productos/ropa/add', this.addRopa);
         this._router.post('/Productos/movil/add', this.addMovil);
